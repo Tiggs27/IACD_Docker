@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app-declarative-backend
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: app-declarative-backend
+        tier: backend
+    spec:
+      containers:
+        - name: backendc
+          image: tiagoconceicao/backend
+          env:
+            - name: AUTH_ADDRESS
+              value: "mongo-service.default"
+          volumeMounts:
+            -mountPath: /logs
+             name: back_volume
+      volumes:
+        - name: back_volume
+         persistentVolumeClaim:
+            claimName: back-pvc

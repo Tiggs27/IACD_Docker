@@ -1,0 +1,25 @@
+version: '1.8'
+
+services:
+  mongodb:
+    image: mongo
+    volumes:
+      - mongodb:/data/db
+
+  backend:
+    build: ./backend
+    ports:
+      - '80:80'
+    depends_on:
+      - 'mongodb'
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - 'backend'
+    stdin_open: true
+    tty: true
+
+volumes:
+  mongodb:
